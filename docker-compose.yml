@@ -1,0 +1,36 @@
+version: "3.2"
+services:
+  rabbitserver:
+    container_name: davco-rabbitserver    
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbit      
+    ports:
+      - "15672:15672"
+      - "15671:15671"
+      - "5672:5672"
+    expose:
+      - 15672
+      - 15671
+      - 5672
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+
+  rabbitworker:
+    container_name: rabbit-worker
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+    depends_on:
+     - rabbitserver
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

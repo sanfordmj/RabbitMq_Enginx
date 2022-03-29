@@ -1,0 +1,102 @@
+{
+	"rabbit_version": "3.8.3",
+	"rabbitmq_version": "3.8.3",
+	"users": [
+		{
+			"name": "admin",
+			"password_hash": "5Qgre9mCY6wtVZB/n8TqFUEvZAxg2jv744tjehVPlrlUDGR9",
+			"hashing_algorithm": "rabbit_password_hashing_sha256",
+			"tags": "administrator"
+		},
+		{
+			"name": "dws.dataservice",
+			"password_hash": "amWPAWcu4aMyYMDj/4v+eQhZLwAU+EWe5GzfksclRyXpwb8S",
+			"hashing_algorithm": "rabbit_password_hashing_sha256",
+			"tags": ""
+		}
+	],
+	"vhosts": [
+		{
+			"name": "davco-logging"
+		},
+		{
+			"name": "/"
+		}
+	],
+	"permissions": [
+		{
+			"user": "admin",
+			"vhost": "davco-logging",
+			"configure": ".*",
+			"write": ".*",
+			"read": ".*"
+		},
+		{
+			"user": "admin",
+			"vhost": "/",
+			"configure": ".*",
+			"write": ".*",
+			"read": ".*"
+		},
+		{
+			"user": "dws.dataservice",
+			"vhost": "davco-logging",
+			"configure": ".*",
+			"write": ".*",
+			"read": ".*"
+		}		
+	],
+	"topic_permissions": [
+		{
+			"user": "admin",
+			"vhost": "/",
+			"exchange": "",
+			"write": ".*",
+			"read": ".*"
+		}
+	],
+	"parameters": [],
+	"global_parameters": [
+		{
+			"name": "cluster_name",
+			"value": "rabbit@davco-rabbitmq-server"
+		},
+		{
+			"name": "internal_cluster_id",
+			"value": "rabbitmq-cluster-id-uiQY72El-t7KshK33EgSmA"
+		}
+	],
+	"policies": [],
+	"queues": [
+		{
+			"name": "error",
+			"vhost": "davco-logging",
+			"durable": true,
+			"auto_delete": false,
+			"arguments": {
+				"x-queue-type": "classic"
+			}
+		}
+	],
+	"exchanges": [
+		{
+			"name": "logging",
+			"vhost": "davco-logging",
+			"type": "direct",
+			"durable": true,
+			"auto_delete": false,
+			"internal": false,
+			"arguments": {}
+		}
+	],
+	"bindings": [
+		{
+			"source": "logging",
+			"vhost": "davco-logging",
+			"destination": "error",
+			"destination_type": "queue",
+			"routing_key": "error",
+			"arguments": {}
+		}
+	]
+}
